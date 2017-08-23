@@ -4,29 +4,27 @@
 #include "types.h"
 #include "util.h"
 
+bool isRunning();
+
+void event_dispatcher_initialize();
+
+void startEventDispatch(uint32_t wait_timeout = 100);
+
+void stopEventDispatch();
+
+void addEvent(int fd, uint8_t event);
+
+void removeEvent(int fd, uint8_t event);
+
+void addTimer(callback_t callback, void * user_data, uint64_t interval);
+
+void removeTimer(callback_t callback, void * user_data);
+
+void addLoop(callback_t callback, void * user_data);
+
 class EventDispatcher
 {
-public:
-  virtual ~EventDispatcher();
-
-  EventDispatcher * getInstance();
-
-  bool isRunning() {return running};
-  void startEventDispatch(uint32_t wait_timeout = 100);
-  void stopEventDispatch();
-
-  void addEvent(SOCKET fd, uint8_t event);
-  void removeEvent(SOCKET fd, uint8_t event);
-
-  void addTimer(callback_t callback, void * user_data, uint64_t interval);
-  void removeTimer(callback_t callback, void * user_data);
-
-  void addLoop(callback_t callback, void * user_data);
-protected:
-  EventDispatcher();
 private:
-  static EventDispatcher * instance;
-
   int m_epfd;
   volatile bool running;
 
@@ -46,16 +44,3 @@ private:
 };
 
 #endif
-
-/*
-#include "ostype.h"
-#include "util.h"
-#include "Lock.h"
-
-enum {
-        SOCKET_READ     = 0x1,
-        SOCKET_WRITE    = 0x2,
-        SOCKET_EXCEP    = 0x4,
-        SOCKET_ALL      = 0x7
-};
-

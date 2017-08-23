@@ -34,7 +34,7 @@ public:
   void unlock();
   virtual bool tryLock();
 
-  pthread_mutex_t & getMutex() {return m_lock};
+  pthread_mutex_t & getMutex() { return m_lock };
 private:
   pthread_mutex_t m_lock;
 };

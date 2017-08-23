@@ -2,29 +2,97 @@
 
 #define MAX_FD_SIZE 1024
 
-EventDispatcher * EventDispatcher::instance = NULL;
+static bool running = false;
+static int epfd = -1;
 
-EventDispatcher::EventDispatcher()
+bool is_running()
 {
-  running = false;
-  m_epfd = epoll_create(MAX_FD_SIZE);
-  if (-1 == m_epfd) {
-    printf("Dispatcher epoll create failed\n");
+  return running;
+}
+
+void event_dispatcher_initialize()
+{
+  epfd = epoll_create(MAX_FD_SIZE);
+  if (-1 == epfd) {
+    // TODO
   }
 }
 
-EventDispatcher::~EventDispatcher()
+void event_dispatcher_finalize()
 {
   if (0 < m_epfd)
     close(m_epfd);
 }
 
-EventDispatcher * EventDispatcher::getInstance()
+void start_event_dispatch(uint32_t wait_timeout)
 {
-  if (NULL == instance) {
-    instance = new Dispatcher();
+  if (running) {
+    // TODO
+    return ;
   }
-  return instance;
+
+  struct epoll_event events[MAX_FD_SIZE];
+  int nfds = 0;
+  while (running) {
+    nfds = epoll_wait(epfd, events, MAX_FD_SIZE, wait_timeout);
+    if (-1 == nfds) {
+      // TODO
+      break;
+    }
+
+    for (int i = 0; i < nfds; ++i) {
+      int fd = events[i].data.fd;
+
+      // find socket by fd, check if exists
+      // read, write, close by pSocket
+      #ifdef EPOLLRDHUP
+      if (events[i].events & EPOLLRDHUP) {
+        // TODO onclose?
+      }
+      #endif
+      if (events[i].events & EPOLLIN) {
+        // TODO read
+      }
+      if (events[i].events & EPOLLOUT) {
+        // TODO write
+      }
+      if (events[i].events & (EPOLLPRI | EPOLLERR | EPOLLHUP)) {
+        // TODO close?
+      }
+      // socket ptr release ?
+    }
+    //checkTimer();checkLoop();
+  }
+}
+
+void stop_event_dispatch()
+{
+  running = false;
+}
+
+void add_event(int fd, uint8_t event)
+{
+
+}
+
+void remove_event(int fd, uint8_t event)
+{
+
+}
+
+void add_timer(callback_t callback, void * user_data, uint64_t interval)
+{
+
+}
+
+void remove_timer(callback_t callback, void * user_data)
+{
+
+}
+
+void add_loop(callback_t callback, void * user_data)
+{
+
 }
 
 void EventDispatcher::addEvent(SOCKET fd, uint8_t event)
@@ -113,43 +181,4 @@ void EventDispatcher::checkLoop()
   }
 }
 
-void EventDispatcher::startEventDispatch(uint32_t wait_timeout)
-{
-  if (running) {
-    printf("Dispatcher already start\n");
-    return ;
-  }
 
-  running = true;
-  struct epoll_event events[MAX_FD_SIZE];
-  int nfds = 0;
-  while (running) {
-    nfds = epoll_wait(m_epfd, events, MAX_FD_SIZE, wait_timeout);
-    if (-1 == nfds) {
-      break;
-    }
-    for (int i = 0; i < nfds; ++i) {
-      int fd = events[i].data.fd;
-      // find socket by fd, check if exists
-      // read, write, close by pSocket
-      #ifdef EPOLLRDHUP
-      if (events[i].events & EPOLLRDHUP)
-        //closesocket by onclose
-        ;
-      #endif
-      if (events[i].events & EPOLLIN)
-        ;// read
-      if (events[i].events & EPOLLOUT)
-        ;// write
-      if (events[i].events & (EPOLLPRI | EPOLLERR | EPOLLHUP))
-        ;// close
-      // socket ptr release ?
-    }
-    //checkTimer();checkLoop();
-  }
-}
-
-void EventDispatcher::stopEventDispatch()
-{
-  running = false;
-}
