@@ -89,6 +89,21 @@ PACKAGES
 systemctl list-units --type=service
 ```
 
+SELinux context
+```sh
+ls -Z ssl.crt
+
+sestatus
+sestatus -v
+restorecon ssl.crt
+
+sudo semanage port -l | grep http_port_t
+sudo semanage port -a -t http_port_t -p tcp 10443
+
+vi /etc/selinux/config
+
+```
+
 ### PHP 环境
 ```sh
 #!/bin/bash
