@@ -59,3 +59,15 @@ public class GlobalExceptionHandler {
 
 }
 ```
+
+```java
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(value = Exception.class)
+    public String handlerException(HttpServletRequest request,
+                                   Exception exception) {
+    }
+}
+```
+
