@@ -231,3 +231,86 @@ git checkout -b release-1.2 develop
 git push seraphic HEAD:refs/drafts/$PUSH_BRANCH_NAME
 git push seraphic HEAD:refs/for/$PUSH_BRANCH_NAME
 git push origin HEAD:refs/for/master
+
+
+
+
+
+
+
+
+
+
+
+git diff --staged <file>
+
+显示所有远程仓库
+git remote -v
+
+git reset --hard HEAD~1
+git push --force
+
+重置暂存区
+git reset [file]
+重置暂存区与工作区
+git reset --hard
+重置当前分支的指针为指定commit，同时重置暂存区，但工作区不变
+git reset [commit]
+重置当前分支的HEAD为指定commit，同时重置暂存区和工作区
+git reset --hard [commit]
+新建一个commit，用来撤销指定commit
+git revert [commit]
+
+
+```sh
+git branch develop
+git push -u origin develop
+
+git checkout develop
+git checkout -b feature_branch
+
+git checkout develop
+git merge feature_branch
+
+git checkout develop
+git checkout -b release/0.1.0
+
+git checkout develop
+git merge release/0.1.0
+
+git checkout master
+git checkout -b hotfix_branch
+
+git checkout master
+git merge hotfix_branch
+git checkout develop
+git merge hotfix_branch
+git branch -D hotfix_branch
+```
+
+```sh
+git checkout -b develop
+git checkout -b release/0.1.0
+git checkout develop
+git checkout -b feature_branch
+# a bunch of work is done on the features
+git checkout release/0.1.0
+git merge feature_branch
+# assuming that the release branch is done with that feature
+git checkout develop
+git merge release/0.1.0
+git checkout master
+git merge release/0.1.0
+git branch -D release/0.1.0
+```
+
+hotfix
+```sh
+git checkout master
+git checkout -b hotfix_branch
+# work is done commits are added to the hotfix_branch
+git checkout develop
+git merge hotfix_branch
+git checkout master
+git merge hotfix_branch
+```
