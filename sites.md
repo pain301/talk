@@ -15,7 +15,6 @@ https://mp.weixin.qq.com/s/p5-KDYUyVCO4r5IInq2UgQ
 https://tech.meituan.com/in_depth_understanding_string_intern.html
 
 
-https://juejin.im/post/5ade8a37f265da0b8d418dff?utm_medium=be&utm_source=weixinqun
 https://juejin.im/post/5adae3cdf265da0b8c2488b6?utm_medium=be&utm_source=weixinqun
 https://juejin.im/post/5ade08bf6fb9a07aa349e05c?utm_medium=be&utm_source=weixinqun
 https://mp.weixin.qq.com/s/nUtAcbwQ1jBSygtTKoC6ZA
