@@ -797,3 +797,129 @@ public static Pattern GENERAL_EMAIL_PATTERN = Pattern.compile(
 Java表达式为：
 public static Pattern CHINESE_PATTERN = Pattern.compile(
         "[\\u4e00-\\u9fff]");
+
+
+
+
+
+
+
+
+避免死锁的技术：
+加锁顺序
+加锁时限
+死锁检测
+
+interrupted()：测试当前线程是否已经是中断状态，执行后具有状态标志清除为false的功能
+isInterrupted()：测试线程Thread对象是否已经是中断状态，但不清除状态标志
+```java
+public static boolean interrupted() {
+  return currentThread().isInterrupted(true);
+}
+
+public boolean isInterrupted() {
+  return isInterrupted(false);
+}
+
+private native boolean isInterrupted(boolean ClearInterrupted);
+```
+终止正在运行的线程的三种方法：
+使用退出标志
+使用stop方法强行终止线程
+使用interrupt方法中断线程
+
+yield()方法的作用是放弃当前的CPU资源，将它让给其他的任务去占用CPU执行时间。但放弃时间不确定，有可能刚放弃，马上又获得CPU时间片。yield()方法和sleep方法一样，线程并不会让出锁，和wait不同
+
+thread.setDaemon(true)必须在thread.start()之前设置，否则会报IllegalThreadStateException异常；在Daemon线程中产生的新线程也是Daemon的；在使用ExecutorSerice等多线程框架时，会把守护线程转换为用户线程，并且也会把优先级设置为Thread.NORM_PRIORITY，所以如果要使用后台线程就不能用java的线程池。在构建Daemon线程时，不能依靠finally块中的内容来确保执行关闭或清理资源的逻辑
+```java
+// Executors/DefaultThreadFactory
+static class DefaultThreadFactory implements ThreadFactory {
+    private static final AtomicInteger poolNumber = new AtomicInteger(1);
+    private final ThreadGroup group;
+    private final AtomicInteger threadNumber = new AtomicInteger(1);
+    private final String namePrefix;
+
+    DefaultThreadFactory() {
+        SecurityManager s = System.getSecurityManager();
+        group = (s != null) ? s.getThreadGroup() :
+                              Thread.currentThread().getThreadGroup();
+        namePrefix = "pool-" +
+                      poolNumber.getAndIncrement() +
+                     "-thread-";
+    }
+
+    public Thread newThread(Runnable r) {
+        Thread t = new Thread(group, r,
+                              namePrefix + threadNumber.getAndIncrement(),
+                              0);
+        if (t.isDaemon())
+            t.setDaemon(false);
+        if (t.getPriority() != Thread.NORM_PRIORITY)
+            t.setPriority(Thread.NORM_PRIORITY);
+        return t;
+    }
+}
+```
+声明为synchronized的父类方法A，在子类中重写之后并不具备synchronized的特性
+
+ReentrantLock中的其余方法
+int getHoldCount()：查询当前线程保持此锁定的个数，也就是调用lock()方法的次数。
+int getQueueLength()：返回正等待获取此锁定的线程估计数。比如有5个线程，1个线程首先执行await()方法，那么在调用getQueueLength方法后返回值是4，说明有4个线程在等待lock的释放。
+int getWaitQueueLength(Condition condition)：返回等待此锁定相关的给定条件Condition的线程估计数。比如有5个线程，每个线程都执行了同一个condition对象的await方法，则调用getWaitQueueLength(Condition condition)方法时返回的int值是5。
+boolean hasQueuedThread(Thread thread)：查询指定线程是否正在等待获取此锁定。
+boolean hasQueuedThreads()：查询是否有线程正在等待获取此锁定。
+boolean hasWaiters(Condition condition)：查询是否有线程正在等待与此锁定有关的condition条件。
+boolean isFair()：判断是不是公平锁。
+boolean isHeldByCurrentThread()：查询当前线程是否保持此锁定。
+boolean isLocked()：查询此锁定是否由任意线程保持。
+void lockInterruptibly()：如果当前线程未被中断，则获取锁定，如果已经被中断则出现异常
+
+ReentrantLock与synchonized区别
+ReentrantLock可以中断地获取锁（void lockInterruptibly() throws InterruptedException）
+ReentrantLock可以尝试非阻塞地获取锁（boolean tryLock()）
+ReentrantLock可以超时获取锁。通过tryLock(timeout, unit)，可以尝试获得锁，并且指定等待的时间。
+ReentrantLock可以实现公平锁。通过new ReentrantLock(true)实现。
+ReentrantLock对象可以同时绑定多个Condition对象，而在synchronized中，锁对象的的wait(), notify(), notifyAll()方法可以实现一个隐含条件，如果要和多于一个的条件关联的对象，就不得不额外地添加一个锁，而ReentrantLock则无需这样做，只需要多次调用newCondition()方法即可
+
+gc日志：-XX:PrintHeapAtGC -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamp -Xloggc:$CATALINA_BASE/logs/gc.log
+
+观察内核状态的上下文切换(cs)次数
+bi和bo这两个值，分别表示块设备每秒接收的块数量和块设备每秒发送的块数量，可以判定io繁忙状况
+vmstat 1 5
+
+String类型的常量池主要使用方法有两种：
+直接使用双引号声明出来的String对象会直接存储在常量池中。
+如果不是用双引号声明的String对象，可以使用String提供的intern方法。intern 方法会从字符串常量池中查询当前字符串是否存在，若不存在就会将当前字符串放入常量池中
+
+异常
+在Finally块中清理资源或者使用try-with-resource语句
+不要捕获Throwable
+不要忽略异常
+不要记录并抛出异常，经常会给同一个异常输出多条日志
+包装异常时不要抛弃原始的异常
+
+vmstat 测试
+us过高：
+a. 代码问题。比如一个耗时的循环不加sleep，或者在一些cpu密集计算（如xml解析，加解密，加解压，数据计算）时没处理好
+b. gc频繁。一个比较容易遗漏的问题就是gc频繁时us容易过高，因为垃圾回收属于大量计算的过程。gc频繁带来的cpu过高常伴有内存的大量波动，通过内存来判断并解决该问题更好
+sy过高：
+a. 上下文切换次数过多。通常是系统内线程数量较多，并且线程经常在切换，由于系统抢占相对切换时间和次数比较合理，所以sy过高通常都是主动让出cpu的情况，比如sleep或者lock wait, io wait。
+wa过高：
+a. 等待io的cpu占比较多。注意与上面情况的区别，io wait引起的sy过高指的是io不停的wait然后唤醒，因为数量较大，导致上下文切换较多，强调的是动态的过程；而io wait引起的wa过高指的是io wait的线程占比较多，cpu切换到这个线程是io wait，到那个线程也是io wait，于是总cpu就是wait占比较高。
+id过高：
+a. 很多人认为id高是好的，其实在性能测试中id高说明资源未完全利用，或者压测不到位，并不是好事
+
+nc 127.0.0.1 6379
+
+```java
+String a = "a";
+String b = "b";
+
+String c = "a" + "b";
+
+String c = a + b;
+
+for (int i = 0; i < 5; i++) {
+  a += b;
+}
+```
