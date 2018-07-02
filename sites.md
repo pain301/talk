@@ -1,13 +1,3 @@
-
-缓存
-https://mp.weixin.qq.com/s/gwrFNuoA7jT-VxlZ-ysOnQ
-
-mybatis
-https://juejin.im/post/5aba424051882548fe4a2965?utm_medium=be&utm_source=weixinqun
-
-反射
-https://mp.weixin.qq.com/s/2IPkDLlZ0a7JWzGvalVO3w
-
 分布式锁
 https://juejin.im/post/5a20cd8bf265da43163cdd9a
 
