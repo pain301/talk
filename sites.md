@@ -1,10 +1,4 @@
 
-并发
-https://juejin.im/post/5a3b7f5c6fb9a0452936ee2a
-https://juejin.im/post/5a3f27a46fb9a0451c3a9bc6
-http://ifeve.com/redis-lock/
-https://juejin.im/post/5a5d981df265da3e3d492460
-
 threadlocal
 https://juejin.im/post/5a64a581f265da3e3b7aa02d
 
