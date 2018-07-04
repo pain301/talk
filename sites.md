@@ -1,12 +1,4 @@
 
-
-spring cloud
-https://juejin.im/post/5a5eaff8f265da3e58595de0
-分布式事务
-https://juejin.im/post/5a631b876fb9a01c95262e72
-https://juejin.im/entry/5a7b77ee5188257a5f1eb306?utm_medium=be&utm_source=weixinqun
-https://juejin.im/entry/5ab032f9518825555d4713d5?utm_medium=be&utm_source=weixinqun
-
 分布式一致性
 https://juejin.im/post/5a69509ff265da3e4d72e3db?utm_medium=be&utm_source=weixinqun
 
