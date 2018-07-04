@@ -1,16 +1,4 @@
 
-分布式一致性
-https://juejin.im/post/5a69509ff265da3e4d72e3db?utm_medium=be&utm_source=weixinqun
-
-spring 事务
-https://juejin.im/post/5a9ac83e6fb9a028d936a005?utm_medium=be&utm_source=weixinqun
-
-内部类
-https://juejin.im/post/5a69a2ad6fb9a01c9658559c?utm_medium=be&utm_source=weixinqun
-https://juejin.im/post/5a903ef96fb9a063435ef0c8?utm_medium=be&utm_source=weixinqun
-
-https://juejin.im/post/5ad80ad35188252eae3b22a4
-https://juejin.im/post/5a404663518825696f7e380b
 
 jvm
 https://juejin.im/post/5a0d5b176fb9a04504076def
