@@ -1,8 +1,4 @@
 
-redis
-https://juejin.im/post/5a9fac98f265da2375067102?utm_medium=be&utm_source=weixinqun
-https://juejin.im/post/5ab0d717f265da2380597974?utm_medium=be&utm_source=weixinqun
-
 内存管理
 https://juejin.im/post/5a7783b65188257a6d635a8b?utm_medium=be&utm_source=weixinqun
 https://juejin.im/post/5ab1fd926fb9a028e25d6e98?utm_medium=be&utm_source=weixinqun
