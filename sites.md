@@ -1,7 +1,4 @@
 
-搭建
-https://juejin.im/post/5a97fbb46fb9a028b5475043?utm_medium=be&utm_source=weixinqun
-https://juejin.im/entry/5aa6354c5188255588050a5f?utm_medium=be&utm_source=weixinqun
 
 监控
 https://juejin.im/post/5a4b2f43f265da432c243796?utm_medium=beqn&utm_source=weixinqun
