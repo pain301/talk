@@ -1,13 +1,4 @@
 
-
-监控
-https://juejin.im/post/5a4b2f43f265da432c243796?utm_medium=beqn&utm_source=weixinqun
-
-hystrix
-https://juejin.im/entry/5a5e79fe51882573520d6ab4
-https://juejin.im/entry/5aa99b996fb9a028c8129194?utm_medium=be&utm_source=weixinqun
-https://juejin.im/post/5aab23c05188257bf550cdd6?utm_medium=be&utm_source=weixinqun
-
 eureka
 https://juejin.im/entry/5a723ce86fb9a01cb64f1c63?utm_medium=be&utm_source=weixinqun
 https://juejin.im/entry/5a9332705188257a8929cfc0?utm_medium=be&utm_source=weixinqun
