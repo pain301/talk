@@ -4,8 +4,6 @@ http://www.iocoder.cn/Tomcat/Tomcat-collection/
 
 jvm
 https://juejin.im/post/5a0d5b176fb9a04504076def
-https://juejin.im/post/5a9df626518825556f54e99f?utm_medium=be&utm_source=weixinqun
-https://juejin.im/post/5aa677a56fb9a028c06a7a8b?utm_medium=be&utm_source=weixinqun
 
 AOP
 https://juejin.im/post/5a64b5056fb9a01ca9158cb1
