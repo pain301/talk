@@ -1,21 +1,16 @@
-bootstrap.init
+1. 初始化
+Bootstrap.init()
 ```java
 public void init() throws Exception {
+
+    // 初始化 commonLoader, catalinaLoader, sharedLoader
     initClassLoaders();
     Thread.currentThread().setContextClassLoader(catalinaLoader);
     SecurityClassLoad.securityClassLoad(catalinaLoader);
 
-    // Load our startup class and call its process() method
-    if (log.isDebugEnabled())
-        log.debug("Loading startup class");
-
     // construct Catalina instance
     Class<?> startupClass = catalinaLoader.loadClass("org.apache.catalina.startup.Catalina");
     Object startupInstance = startupClass.getConstructor().newInstance();
-
-    // Set the shared extensions class loader
-    if (log.isDebugEnabled())
-        log.debug("Setting startup class properties");
 
     // set parent classloader for Catalina instance
     String methodName = "setParentClassLoader";
@@ -31,7 +26,9 @@ public void init() throws Exception {
 }
 ```
 
-bootstrap.setAwait
+2. 启动 Catalina
+2.1 TODO
+Bootstrap.setAwait(boolean await)
 ```java
 public void setAwait(boolean await) throws Exception {
     Class<?> paramTypes[] = new Class[1];
@@ -44,10 +41,10 @@ public void setAwait(boolean await) throws Exception {
 }
 ```
 
-bootstrap.load
+2.2 加载 Catalina
+Bootstrap.load(String[] arguments)
 ```java
 private void load(String[] arguments) throws Exception {
-    // Call the load() method
     String methodName = "load";
     Object param[];
     Class<?> paramTypes[];
@@ -62,13 +59,12 @@ private void load(String[] arguments) throws Exception {
     }
     Method method =
         catalinaDaemon.getClass().getMethod(methodName, paramTypes);
-    if (log.isDebugEnabled())
-        log.debug("Calling startup class " + method);
     method.invoke(catalinaDaemon, param);
 }
 ```
 
-bootstrap.start
+2.3 启动 Catalina
+Bootstrap.start()
 ```java
 public void start() throws Exception {
     if( catalinaDaemon==null ) init();
