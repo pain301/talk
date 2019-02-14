@@ -1,3 +1,117 @@
+Monolithic applications => microservices
+
+Linux Namespaces + Linux Control Groups
+pid
+user
+uts
+ipc
+mnt
+net
+
+master(The Control Plane)
+Kubernetes API Server
+Scheduler
+Controller Manager
+etcd
+
+worker
+Kubelet
+Kubernetes Service Proxy
+Docker
+
+docker run busybox echo "Hello world"
+
+------
+
+create app
+app.js
+```
+const http = require('http');
+const os = require('os');
+console.log("lab app starting...");
+var handler = function(request, response) {
+  console.log("request from " + request.connection.remoteAddress);
+  response.writeHead(200);
+  response.end("You've hit " + os.hostname() + "\n");
+};
+var server = http.createServer(handler);
+server.listen(8080);
+```
+Dockerfile
+```
+FROM node:7
+ADD app.js /app.js
+EXPOSE 8080
+ENTRYPOINT ["node", "app.js"]
+```
+```
+docker build -t apple .
+docker run --name apple-c -p 8080:8080 -d apple
+docker inspect apple-c
+docker stop apple-c
+docker rm apple-c
+docker tag apple pain400/apple
+
+docker login
+docker push pain400/apple
+```
+```
+kubectl run apple --image=pain400/apple --port=8080
+```
+1. Kubectl send a REST HTTP request to the Kubernetes API server
+2. Create a new ReplicationController object
+3. The ReplicationController create a new pod
+4. Scheduler schedule the pod to one of the worker nodes
+5. The Kubelet on that node instruct Docker to pull the specified image
+6. Docker create and run the container
+
+```
+kubectl expose rc apple --type=LoadBalancer --name apple-http
+```
+```
+kubectl scale rc apple --replicas=3
+```
+
+------
+
+1. multiple containers or one container with multiple processes
+Containers are designed to run only a single process per container (unless the process itself spawns child processes)
+
+run multiple processes in container, keep all those processes running, restart if crash
+
+2. pod: high-level construct bind containers together
+
+3. organize apps into multiple pods, where each one contains only tightly related components or processes
+
+splitting into multiple pods to improve the utilization of your infrastructure
+splitting into multiple pods to enable individual scaling
+put multiple containers into a single pod when app consists of one main process and one or more complementary processes
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: apple
+spec:
+  containers:
+  - image: pain400/apple
+    name: apple
+    ports:
+    - containerPort: 8080
+      protocol: TCP
+```
+```
+kubectl create -f apple-pod.yaml
+kubectl logs apple-pod
+kubectl logs apple-pod -c apple
+```
+```
+kubectl port-forward apple-pod 8888:8080
+```
+
+
+
+
 minikube start --docker-env http_proxy=http://192.168.200.22:1087 \
                --docker-env https_proxy=http://192.168.200.22:1087 \
                --docker-env no_proxy=192.168.99.0/24
